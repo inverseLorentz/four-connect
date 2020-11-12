@@ -1,12 +1,21 @@
 int[][] board = new int[7][6]; // 0 = empty, 1 = player 1's piece, 2 = player 2's piece
+
 color boardColour = color(127);
 color emptyColour = color(100);
+
 color player1Colour = color(255, 255, 0);
 color player2Colour = color(255, 0, 0);
+color player3Colour = color(0, 255, 0);
+color player4Colour = color(255, 0, 255);
+
 color player1Ghost = lerpColor(player1Colour, emptyColour, 0.5);
 color player2Ghost = lerpColor(player2Colour, emptyColour, 0.5);
+color player3Ghost = lerpColor(player3Colour, emptyColour, 0.5);
+color player4Ghost = lerpColor(player4Colour, emptyColour, 0.5);
+
 int[] ghost = {0, 5}; // where the "ghost" (shadow of where the piece will be placed if clicked) is
-int turn = 1; // 1 is first player, 2 is second player
+int turn = 1; // 1 is first player, 2 is second player, etc.
+int players = 2; // change this for the amount of players in game (maximum 4)
 
 void setup() {
   size(840, 720);
@@ -31,13 +40,21 @@ void draw() {
         // draw ghost
         if (turn == 1) {
           fill(player1Ghost);
-        } else {
+        } else if (turn == 2) {
           fill(player2Ghost);
+        } else if (turn == 3) {
+          fill(player3Ghost);
+        } else {
+          fill(player4Ghost);
         }
       } else if (board[i][j] == 1) {
         fill(player1Colour);
       } else if (board[i][j] == 2) {
         fill(player2Colour);
+      } else if (board[i][j] == 3) {
+        fill(player3Colour);
+      } else if (board[i][j] == 4) {
+        fill(player4Colour);
       } else {
         fill(emptyColour);
       }
@@ -67,6 +84,6 @@ void draw() {
 void mouseReleased() {
   if (ghost[1] >= 0) { // if column is not filled
     board[ghost[0]][ghost[1]] = turn; // put piece at where the ghost is
-    turn = turn % 2 + 1; // turn swaps from 1 to 2 and vice versa
+    turn = turn % players + 1; // cycle turn around number of players
   }
 }
